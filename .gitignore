@@ -1,0 +1,27 @@
+# 保护规则：严禁向数字大脑知识库提交大型多媒体资产
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.zip
+*.tar.gz
+*.7z
+*.rar
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.tiff
+*.psd
+
+# 允许文档内置的必要小图标或流程图（如果有需要可在特定子目录例外放开）
+# !assets/icons/*.png
+
+# 操作系统与编辑器临时文件
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+.vscode/
+.idea/
