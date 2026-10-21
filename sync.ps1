@@ -1,6 +1,7 @@
 # AI Shared Brain PowerShell 一键同步脚本
 $ErrorActionPreference = "Stop"
 
+$env:Path = "C:\Program Files\Git\cmd;C:\Program Files\GitHub CLI;" + $env:Path
 Set-Location -Path $PSScriptRoot
 
 Write-Host "🧠 [AI Shared Brain] 检查同步状态..." -ForegroundColor Cyan

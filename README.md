@@ -14,6 +14,7 @@
 | **[`projects.md`](file:///C:/Users/GL/ai-brain/projects.md)** | 当前活跃项目看板、影视分镜进度与架构追踪 | 涉及具体项目制作或任务排期时查阅 |
 | **[`memory-log.md`](file:///C:/Users/GL/ai-brain/memory-log.md)** | 动态记忆日志：按日期沉淀关键决策、灵感与重要突破 | 记录更新时追加，或回顾过往决策时查阅 |
 | **[`cinematic/`](file:///C:/Users/GL/ai-brain/cinematic/)** | **AI 影视工业级资产专区**（三视图/四视图、运镜、高质量 Prompt） | 编写镜头提示词、资产设计、分镜推演时查阅 |
+| **[`cinematic/visual-quality.md`](file:///C:/Users/GL/ai-brain/cinematic/visual-quality.md)** | **顶级出图十大检查维度**（9.9/10画质控制、空间/光源/材质/防塑料感军规） | 出图、调优 Prompt、质检视觉方案前必读 |
 
 ---
 

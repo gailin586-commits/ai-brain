@@ -5,6 +5,20 @@
 
 ---
 
+## 📅 2026-10-21（二）：合并 Codex 历史核心资产与 Skill 体系
+- **事件**：打通 Codex 环境，完整继承并迁移宿主在 `.codex` 中的历史积淀。
+- **迁移内容**：
+  - 将工业级《用户长期协作与顶级出图标准（10大检查维度）》纳入 `cinematic/visual-quality.md`。
+  - 将 Token 节约规范、Skill 选用偏好以及口语映射（“scaler/scale” ➔ “Skill”）合并入 `preferences.md`。
+  - 将 Codex 全局配置直通挂载至 `ai-brain` 大脑总中枢，实现跨工具统一规范。
+- **涉及文件**：
+  - `cinematic/visual-quality.md`（新增）
+  - `preferences.md`（更新）
+  - `README.md`（更新）
+  - `memory-log.md`（追加）
+
+---
+
 ## 📅 2026-10-21：建立个人数字大脑（AI Shared Brain）
 
 - **事件**：完成跨 AI 共享的“个人数字大脑”本地架构与基础档案建立。
