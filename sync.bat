@@ -7,11 +7,17 @@ echo ========================================
 echo [AI Shared Brain] Syncing to GitHub...
 echo ========================================
 
-git pull --rebase origin main
 git add .
-git commit -m "Auto-sync brain: %date% %time%"
+git diff-index --quiet HEAD --
+if %errorlevel% neq 0 (
+    git commit -m "Auto-sync brain: %date% %time%"
+)
+
+git pull --rebase origin main
 git push origin main
 
 echo.
-echo [Done] Brain sync completed.
+echo ========================================
+echo [Done] Brain sync completed successfully!
+echo ========================================
 timeout /t 2 >nul
