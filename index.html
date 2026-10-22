@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Shared Brain - 个人数字大脑全景中枢</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+    }
+    .glow-purple {
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+    }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.8); }
+  </style>
+</head>
+<body class="bg-[#070b14] text-slate-100 antialiased min-h-screen selection:bg-cyan-500 selection:text-black font-sans pb-12">
+
+  <!-- 顶部状态栏 -->
+  <header class="border-b border-slate-800/80 bg-[#0a0f1d]/90 sticky top-0 z-50 backdrop-blur-md px-6 py-3.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-600/20 border border-cyan-500/30">
+          <span class="text-xl">🧠</span>
+          <span class="absolute -top-1 -right-1 flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-base font-bold tracking-wide bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-400 bg-clip-text text-transparent">
+              AI SHARED BRAIN
+            </h1>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800/50 font-mono">v2.1 工业影视版</span>
+          </div>
+          <p class="text-xs text-slate-400">宿主：<span class="text-slate-200 font-medium">GL (AI 影视师 / Visual Director)</span></p>
+        </div>
+      </div>
+
+      <!-- 右侧指标与同步状态 -->
+      <div class="flex items-center space-x-4 text-xs font-mono">
+        <div class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-800/40 text-emerald-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>GITHUB: SYNCED (PRIVATE)</span>
+        </div>
+        <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+          <span>PATH: ~/ai-brain</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主容器 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+
+    <!-- 核心指标卡片 -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-panel p-4 rounded-xl border-l-4 border-l-cyan-500 transition-all hover:translate-y-[-2px]">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">第一最高协作宪法</div>
+        <div class="text-lg font-bold text-cyan-300 flex items-center justify-between">
+          <span>反迎合·直批硬伤</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">已激活</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-2">严禁顺从错误构思，必须提供最优解</div>
+      </div>
+
+      <div class="glass-panel p-4 rounded-xl border-l-4 border-l-purple-500 transition-all hover:translate-y-[-2px]">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">影视工业资产库</div>
+        <div class="text-lg font-bold text-purple-300 flex items-center justify-between">
+          <span>3大方法论 + 10大维度</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800">已装载</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-2">三视图 / 四视图正反打 / 运镜基石</div>
+      </div>
+
+      <div class="glass-panel p-4 rounded-xl border-l-4 border-l-amber-500 transition-all hover:translate-y-[-2px]">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">动态记忆与项目</div>
+        <div class="text-lg font-bold text-amber-300 flex items-center justify-between">
+          <span>2 条关键沉淀</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">持续生长</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-2">Codex资产合并 + 大脑初始化完毕</div>
+      </div>
+
+      <div class="glass-panel p-4 rounded-xl border-l-4 border-l-emerald-500 transition-all hover:translate-y-[-2px]">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">跨工具全局打通</div>
+        <div class="text-lg font-bold text-emerald-300 flex items-center justify-between">
+          <span>全生态无缝接入</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">实时联动</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-2">Codex / Claude / Antigravity</div>
+      </div>
+    </div>
+
+    <!-- 视觉中枢区：神经网络 Canvas 与 节点探针 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- 动态神经元 Canvas 交互区 (占 2 列) -->
+      <div class="lg:col-span-2 glass-panel rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-3 z-10">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+            <h2 class="text-sm font-semibold text-slate-200 uppercase tracking-wider">大脑神经元拓扑中枢（Neural Topology）</h2>
+          </div>
+          <span class="text-xs text-slate-400">悬停节点触发探针联动</span>
+        </div>
+
+        <!-- Canvas 渲染容器 -->
+        <div class="relative w-full h-[320px] rounded-xl bg-[#050811] border border-slate-800/80 overflow-hidden">
+          <canvas id="neuralCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+          <div class="absolute bottom-3 left-3 text-[11px] text-slate-500 font-mono bg-black/50 px-2 py-1 rounded border border-white/5 pointer-events-none">
+            MODE: LIVE SYNAPSE MAPPING
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2 text-xs">
+          <button onclick="focusNode('core')" class="px-3 py-1 rounded-md bg-slate-800/80 hover:bg-cyan-900/40 text-cyan-300 border border-cyan-800/40 transition">
+            🎯 核心大脑
+          </button>
+          <button onclick="focusNode('constitution')" class="px-3 py-1 rounded-md bg-slate-800/80 hover:bg-red-900/40 text-red-300 border border-red-800/40 transition">
+            🛑 思维宪法区
+          </button>
+          <button onclick="focusNode('cinematic')" class="px-3 py-1 rounded-md bg-slate-800/80 hover:bg-purple-900/40 text-purple-300 border border-purple-800/40 transition">
+            🎬 影视资产区
+          </button>
+          <button onclick="focusNode('quality')" class="px-3 py-1 rounded-md bg-slate-800/80 hover:bg-emerald-900/40 text-emerald-300 border border-emerald-800/40 transition">
+            🔍 10大出图军规
+          </button>
+          <button onclick="focusNode('memory')" class="px-3 py-1 rounded-md bg-slate-800/80 hover:bg-amber-900/40 text-amber-300 border border-amber-800/40 transition">
+            ⏳ 动态记忆流
+          </button>
+        </div>
+      </div>
+
+      <!-- 右侧：当前节点探测卡片 (探针详情) -->
+      <div class="glass-panel rounded-2xl p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <span class="text-xs font-mono text-cyan-400">NODE INSPECTOR // 探针</span>
+            <span id="nodeBadge" class="text-xs px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">ACTIVE</span>
+          </div>
+
+          <h3 id="nodeTitle" class="text-lg font-bold text-white mb-2">AI 影视师个人大脑核心</h3>
+          <p id="nodeDesc" class="text-xs text-slate-300 leading-relaxed mb-4">
+            宿主 GL 的全局知识与思维中枢。已与本地 Git 和 GitHub Private 仓库全面绑定，无缝向所有协同 AI 广播决策标准。
+          </p>
+
+          <div class="space-y-2 mb-4">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">关联资产与规约：</div>
+            <ul id="nodeLinks" class="space-y-1.5 text-xs text-slate-300 font-mono">
+              <li class="flex items-center space-x-1.5 text-cyan-400">
+                <span>▸</span><span>README.md（大脑总索引）</span>
+              </li>
+              <li class="flex items-center space-x-1.5 text-cyan-400">
+                <span>▸</span><span>profile.md（AI 影视师全景画像）</span>
+              </li>
+              <li class="flex items-center space-x-1.5 text-cyan-400">
+                <span>▸</span><span>preferences.md（反迎合协作宪法）</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
+          <span class="text-slate-400">宿主口语映射：</span>
+          <span class="text-amber-300 font-mono font-medium">scale / scaler ➔ Skill</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 交互式影视工作台（Tabs） -->
+    <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800">
+      
+      <!-- Tab 导航 -->
+      <div class="flex border-b border-slate-800 bg-slate-900/60 px-4 pt-2 overflow-x-auto text-xs font-medium">
+        <button onclick="switchTab('tab-checker')" id="btn-tab-checker" class="tab-btn px-4 py-3 border-b-2 border-cyan-400 text-cyan-300 transition flex items-center space-x-2">
+          <span>🔍</span><span>10 大顶级出图维度自检器</span>
+        </button>
+        <button onclick="switchTab('tab-builder')" id="btn-tab-builder" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-2">
+          <span>🎬</span><span>影视级运镜公式构建器</span>
+        </button>
+        <button onclick="switchTab('tab-vault')" id="btn-tab-vault" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-2">
+          <span>🛡️</span><span>防塑料感反向词库（负向盾）</span>
+        </button>
+        <button onclick="switchTab('tab-memory')" id="btn-tab-memory" class="tab-btn px-4 py-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-2">
+          <span>📅</span><span>动态记忆时间线流</span>
+        </button>
+      </div>
+
+      <!-- Tab 1: 10 大出图维度自检器 -->
+      <div id="tab-checker" class="tab-content p-6 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center space-x-2">
+              <span>工业级 9.9/10 出图严格检查清单</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-normal">源自 Codex 核心沉淀</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">在将提示词输入 Midjourney / Flux / Runway 前，快速勾选核验以彻底杜绝 AI 假感</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-xs text-slate-400 font-mono">质量评分：</span>
+            <span id="scoreText" class="text-xl font-bold font-mono text-cyan-400">10 / 10</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs" id="checklistContainer">
+          <!-- 动态渲染 10 大维度 -->
+        </div>
+      </div>
+
+      <!-- Tab 2: 运镜公式构建器 -->
+      <div id="tab-builder" class="tab-content hidden p-6 space-y-5">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center space-x-2">
+            <span>运镜提示词五大基石生成器</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800 font-normal">支持 Runway / Luma / Kling</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">通过标准视听语法组合相机运动、重力惯性与终点构图，杜绝机械式位移与形变</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">1. 机位初始景别 (Shot Size)</label>
+            <select id="p_shot" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="Medium close-up shot">中近景 (Medium Close-up)</option>
+              <option value="Low-angle tracking shot">低机位仰拍跟随 (Low-angle Tracking)</option>
+              <option value="Extreme close-up shot">特写/微距 (Extreme Close-up)</option>
+              <option value="Wide establishing shot">宏大远景交代镜头 (Wide Establishing)</option>
+              <option value="Over-the-shoulder shot">过肩正反打机位 (Over-the-shoulder)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">2. 单一核心运镜动势 (Camera Motion)</label>
+            <select id="p_motion" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="slow deliberate push-in with organic handheld drift">缓推慢进带有机微晃 (Slow deliberate push-in)</option>
+              <option value="smooth tracking shot following footsteps forward">平滑向前运动跟拍 (Smooth tracking forward)</option>
+              <option value="slow dolly-out revealing surrounding environment">缓拉后退揭示宏大空间 (Slow dolly-out)</option>
+              <option value="controlled 90-degree orbit around the subject">90度受控弧形环绕 (Controlled 90° orbit)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">3. 物理力学与重力 (Physics & Weight)</label>
+            <select id="p_physics" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="natural secondary motion of fabric and hair following momentum">衣角与发丝随惯性自然摆动 (Fabric momentum)</option>
+              <option value="heavy boots crushing gravel with slight dust kicking up">重靴踏地挤压碎石并扬起微尘 (Heavy boot crush)</option>
+              <option value="subtle physiological breathing sway without floating">生理呼吸感微晃杜绝漂浮 (Physiological sway)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">4. 光影动机 (Motivated Lighting)</label>
+            <select id="p_light" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="practical warm sodium streetlamp overhead, deep realistic shadow falloff">高压钠灯顶光与深邃衰减暗影 (Sodium lamp)</option>
+              <option value="soft diffuse moonlight from side, subtle rim lighting">侧向柔和月光与冷调轮廓光 (Soft moonlight rim)</option>
+              <option value="flickering neon amber sign reflecting on wet ground">闪烁琥珀霓虹与潮湿路面反射 (Neon wet ground)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">5. 终点构图 (End Frame Target)</label>
+            <select id="p_end" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="settling on an intense eye contact with deep emotional focus">定格于眼部强烈视线聚焦 (Intense eye contact)</option>
+              <option value="settling on trembling weathered hands holding the object">定格于颤抖特写手部细节 (Trembling hands)</option>
+              <option value="gradual deceleration into an ominous quiet frame">减速平稳过渡至压迫感静态构图 (Quiet frame)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1.5 font-medium">6. 摄影机与胶片质感 (Camera Spec)</label>
+            <select id="p_lens" onchange="generatePrompt()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="shot on 35mm anamorphic lens, Arri Alexa, cinematic film grain">35mm 变形宽银幕电影镜头 (35mm Anamorphic)</option>
+              <option value="shot on 50mm prime lens, organic texture, shallow depth of field">50mm 定焦镜头浅景深 (50mm Prime Lens)</option>
+              <option value="shot on 85mm portrait cinematic lens, natural optical bokeh">85mm 人像电影镜头自然焦外 (85mm Bokeh)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 p-4 rounded-xl bg-[#050811] border border-cyan-500/30 relative">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono text-cyan-400 uppercase">PROMPT PREVIEW // 实时生成预览</span>
+            <button onclick="copyGeneratedPrompt()" id="copyBtn" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-semibold text-xs rounded transition flex items-center space-x-1">
+              <span>📋</span><span>一键复制 Prompt</span>
+            </button>
+          </div>
+          <p id="generatedPromptText" class="text-xs text-slate-200 font-mono leading-relaxed selection:bg-cyan-500 selection:text-black">
+            <!-- 动态生成 -->
+          </p>
+        </div>
+      </div>
+
+      <!-- Tab 3: 防塑料感词库 -->
+      <div id="tab-vault" class="tab-content hidden p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center space-x-2">
+              <span>防 AI 塑料感与廉价 CG 过滤盾牌</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">杜绝油腻反光、芭比娃娃脸、未校准3D质感与多余肢体</p>
+          </div>
+          <button onclick="copyNegativePrompts()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-800/40 font-mono text-xs rounded transition">
+            📋 复制全套负向词
+          </button>
+        </div>
+
+        <div class="p-4 rounded-xl bg-red-950/20 border border-red-900/40 text-xs font-mono text-red-300 leading-relaxed" id="negativePromptBox">
+          oversaturated, glossy skin, plastic doll look, octane render, unreal engine 5, 3d render, excessive airbrushing, airbrushed textures, bad anatomy, deformed limbs, floating objects, jittery movement, uncanny valley, watermark, bad hands, extra fingers, symmetrical alien eyes, modern buildings in period scenes
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+            <div class="font-bold text-slate-200 mb-1">🚫 质感避坑</div>
+            <p class="text-slate-400">禁止使用 4k, 8k, photorealistic 等堆砌词；改用具体胶片颗粒与光学镜头。</p>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+            <div class="font-bold text-slate-200 mb-1">🚫 空间避坑</div>
+            <p class="text-slate-400">正面平视时禁止广角畸变；涉及镜面或积水时，必须几何化锁定反射倒置逻辑。</p>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+            <div class="font-bold text-slate-200 mb-1">🚫 时代避坑</div>
+            <p class="text-slate-400">严格剔除不属于该故事时代的建筑、灯光与现代物件，锁定时代服饰细节。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: 记忆时间线流 -->
+      <div id="tab-memory" class="tab-content hidden p-6 space-y-4">
+        <h3 class="text-base font-bold text-white mb-2">动态记忆时间线（Memory Stream）</h3>
+        <div class="space-y-4 border-l-2 border-slate-800 ml-3 pl-5 text-xs">
+          
+          <!-- Event 2 -->
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-cyan-400 border-2 border-[#0a0f1d]"></span>
+            <div class="text-cyan-400 font-mono font-medium">2026-10-21（二）· Codex 核心资产与 Skill 体系大合并</div>
+            <div class="text-slate-200 font-semibold mt-1">打通 Codex 环境，完整继承宿主在 .codex 中的历史出图军规</div>
+            <p class="text-slate-400 mt-1 leading-relaxed">
+              纳入 10 大出图检查维度、Token 节约规范与口语映射（scale ➔ Skill）。完成 Codex 全局直通硬链接。
+            </p>
+          </div>
+
+          <!-- Event 1 -->
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-purple-400 border-2 border-[#0a0f1d]"></span>
+            <div class="text-purple-400 font-mono font-medium">2026-10-21 · 个人数字大脑（AI Shared Brain）创立</div>
+            <div class="text-slate-200 font-semibold mt-1">确立 AI 影视师定位与第一最高协作宪法</div>
+            <p class="text-slate-400 mt-1 leading-relaxed">
+              完成本地模块化档案（5大核心+影视专区）、绑定 GitHub 私有仓库、打通全局 AGENTS 与 Claude 规范。
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 底部操作底栏 -->
+    <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800/80 text-xs">
+      <div class="flex items-center space-x-2 text-slate-400">
+        <span>📁 本地路径：</span>
+        <code class="text-cyan-300 font-mono bg-black/40 px-2 py-0.5 rounded">C:\Users\GL\ai-brain</code>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-slate-400">自动同步口诀：</span>
+        <span class="text-emerald-400 font-semibold">双击运行 sync.bat 即刻全量上云</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 交互逻辑脚本 -->
+  <script>
+    // 1. 10 大检查清单数据
+    const checklistItems = [
+      { id: "c1", title: "1. 结构体系化", desc: "提示词分层清楚，主体、机位、光源各控制项归属分明" },
+      { id: "c2", title: "2. 空间与叙事控制", desc: "前中后景与环境稳定，严格排除跨时代或风格的无关建筑" },
+      { id: "c3", title: "3. 机位与构图控制", desc: "明确高度、朝向与焦段，正面平视时禁止广角畸变与异常倾斜" },
+      { id: "c4", title: "4. 光源系统动机", desc: "主光/辅光/实景光来源明确，严禁模型凭空增加无动机假光" },
+      { id: "c5", title: "5. 色彩控制边界", desc: "主色与辅助色比例明确，防止点缀色扩散与色相漂移" },
+      { id: "c6", title: "6. 材质与表面真实状态", desc: "混凝土/金属/玻璃磨损反光逻辑真实，符合潮湿或干燥工况" },
+      { id: "c7", title: "7. 屏幕与反射几何逻辑", desc: "屏幕/水面/镜面反射位置大小及倒置关系符合几何定律" },
+      { id: "c8", title: "8. 文字与符号精确约束", desc: "只在指定区域出现 exact text，其余区域严禁乱码与水印" },
+      { id: "c9", title: "9. 定制禁止项 (Negative)", desc: "覆盖漂浮物、透视错误、塑料皮肤及时代错误特征" },
+      { id: "c10", title: "10. 模型适配与避坑", desc: "针对当前视频/生图模型的专有弱点做提前反向防御" }
+    ];
+
+    function renderChecklist() {
+      const container = document.getElementById("checklistContainer");
+      container.innerHTML = checklistItems.map((item, idx) => `
+        <label class="flex items-start space-x-3 p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 hover:border-cyan-800/50 cursor-pointer transition">
+          <input type="checkbox" checked onchange="updateScore()" class="mt-0.5 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-0 focus:ring-offset-0">
+          <div>
+            <div class="font-bold text-slate-200">${item.title}</div>
+            <div class="text-slate-400 mt-0.5">${item.desc}</div>
+          </div>
+        </label>
+      `).join('');
+    }
+
+    function updateScore() {
+      const total = checklistItems.length;
+      const checked = document.querySelectorAll('#checklistContainer input[type="checkbox"]:checked').length;
+      const score = (checked / total * 10).toFixed(1);
+      const textEl = document.getElementById('scoreText');
+      textEl.innerText = `${score} / 10`;
+      if (score >= 9) {
+        textEl.className = "text-xl font-bold font-mono text-cyan-400";
+      } else if (score >= 7) {
+        textEl.className = "text-xl font-bold font-mono text-amber-400";
+      } else {
+        textEl.className = "text-xl font-bold font-mono text-red-400";
+      }
+    }
+
+    // 2. Tab 切换
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-cyan-400', 'text-cyan-300');
+        btn.classList.add('border-transparent', 'text-slate-400');
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.remove('border-transparent', 'text-slate-400');
+      activeBtn.classList.add('border-cyan-400', 'text-cyan-300');
+    }
+
+    // 3. 运镜公式生成
+    function generatePrompt() {
+      const shot = document.getElementById('p_shot').value;
+      const motion = document.getElementById('p_motion').value;
+      const physics = document.getElementById('p_physics').value;
+      const light = document.getElementById('p_light').value;
+      const end = document.getElementById('p_end').value;
+      const lens = document.getElementById('p_lens').value;
+
+      const fullPrompt = `${shot}, ${motion}. Character in physical interaction, ${physics}. Environmental lighting featuring ${light}. Dynamic progression ${end}. Captured with ${lens}, cinematic realism, physical motion momentum.`;
+      document.getElementById('generatedPromptText').innerText = fullPrompt;
+    }
+
+    function copyGeneratedPrompt() {
+      const text = document.getElementById('generatedPromptText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<span>✅</span><span>已复制！</span>';
+        setTimeout(() => {
+          btn.innerHTML = '<span>📋</span><span>一键复制 Prompt</span>';
+        }, 1500);
+      });
+    }
+
+    function copyNegativePrompts() {
+      const text = document.getElementById('negativePromptBox').innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制负向词库到剪贴板！");
+      });
+    }
+
+    // 4. 节点聚焦探针联动
+    const nodeData = {
+      core: {
+        title: "AI 影视师个人大脑核心 (GL Brain Core)",
+        desc: "宿主 GL 的全局知识与思维中枢。打通本地 Git 与 GitHub Private 仓库，向全平台 AI 发送第一准则与视听指令。",
+        badge: "CORE HUB",
+        links: ["README.md（总索引协议）", "profile.md（AI 影视师工具链画像）", "preferences.md（最高协作宪法）"]
+      },
+      constitution: {
+        title: "第一最高准则与协作宪法 (Constitutional Redline)",
+        desc: "严禁盲目顺从与附和！发现逻辑、空间透视、物理硬伤或次优解时，必须第一时间打断并明确指出坑在哪里，直接给出最优解。",
+        badge: "REDLINE",
+        links: ["preferences.md 核心条款", "拒绝套话与空话原则", "口语识别：scale/scaler ➔ Skill"]
+      },
+      cinematic: {
+        title: "影视工业资产沉淀专区 (Cinematic Vault)",
+        desc: "沉淀三视图锁定、场景四视图母图与空间反打、运镜五大基石法则。解决角色变脸、场景跳跃与运动漂浮。",
+        badge: "CINEMATIC",
+        links: ["assets-methodology.md（三视图/四视图）", "camera-and-staging.md（运镜基石）", "prompts-vault.md（高质 Prompt 库）"]
+      },
+      quality: {
+        title: "10 大出图严格检查军规 (Visual Quality 9.9)",
+        desc: "继承原 .codex 历史沉淀，从结构、空间、镜头、光源动机、材质逻辑等 10 大维度对画面进行像素级硬核质检。",
+        badge: "QUALITY 9.9",
+        links: ["visual-quality.md 完整军规", "防塑料感与油光负向词库", "去 AI CG 假感防御体系"]
+      },
+      memory: {
+        title: "动态记忆时间线 (Memory Stream)",
+        desc: "跨工具经验生长的黑匣子。每一次突破性提示词与工作流决策按日期时间戳永久沉淀，双击 sync.bat 一键上云。",
+        badge: "STREAM",
+        links: ["memory-log.md 动态时间轴", "projects.md 活跃项目追踪", "sync.bat 一键云端备份"]
+      }
+    };
+
+    function focusNode(key) {
+      const d = nodeData[key];
+      if (!d) return;
+      document.getElementById('nodeTitle').innerText = d.title;
+      document.getElementById('nodeDesc').innerText = d.desc;
+      document.getElementById('nodeBadge').innerText = d.badge;
+      const linksContainer = document.getElementById('nodeLinks');
+      linksContainer.innerHTML = d.links.map(l => `<li class="flex items-center space-x-1.5 text-cyan-400"><span>▸</span><span>${l}</span></li>`).join('');
+    }
+
+    // 5. HTML5 Canvas 神经元拓扑粒子模拟
+    const canvas = document.getElementById('neuralCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+      width = canvas.parentElement.clientWidth;
+      height = canvas.parentElement.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const nodes = [
+      { id: 'core', label: 'GL 大脑中枢', x: 0.5, y: 0.5, radius: 14, color: '#06b6d4', pulse: 0 },
+      { id: 'constitution', label: '第一准则宪法', x: 0.22, y: 0.28, radius: 9, color: '#f43f5e', pulse: 1 },
+      { id: 'cinematic', label: '影视工业资产', x: 0.78, y: 0.3, radius: 10, color: '#a855f7', pulse: 2 },
+      { id: 'quality', label: '10大出图军规', x: 0.8, y: 0.75, radius: 9, color: '#10b981', pulse: 3 },
+      { id: 'memory', label: '动态记忆流', x: 0.25, y: 0.72, radius: 9, color: '#f59e0b', pulse: 4 }
+    ];
+
+    // 背景浮动微粒子
+    const bgParticles = Array.from({ length: 35 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.0006,
+      vy: (Math.random() - 0.5) * 0.0006,
+      size: Math.random() * 1.5 + 0.5
+    }));
+
+    function drawNeuralGraph() {
+      ctx.clearRect(0, 0, width, height);
+
+      // 绘制背景动态粒子
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.2)';
+      bgParticles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = 1;
+        if (p.x > 1) p.x = 0;
+        if (p.y < 0) p.y = 1;
+        if (p.y > 1) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x * width, p.y * height, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 绘制核心到各区域的突触连线
+      const core = nodes[0];
+      const time = Date.now() * 0.002;
+
+      for (let i = 1; i < nodes.length; i++) {
+        const target = nodes[i];
+        const x1 = core.x * width;
+        const y1 = core.y * height;
+        const x2 = target.x * width;
+        const y2 = target.y * height;
+
+        // 连线
+        const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+        grad.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
+        grad.addColorStop(1, `${target.color}66`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        // 脉冲沿连线移动
+        const pulseProgress = ((time + i * 0.5) % 2) / 2;
+        const px = x1 + (x2 - x1) * pulseProgress;
+        const py = y1 + (y2 - y1) * pulseProgress;
+        ctx.fillStyle = target.color;
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 绘制节点本体与标签
+      nodes.forEach(node => {
+        const nx = node.x * width;
+        const ny = node.y * height;
+        const pulse = Math.sin(time * 2 + node.pulse) * 2;
+
+        // 外晕光
+        ctx.fillStyle = `${node.color}22`;
+        ctx.beginPath();
+        ctx.arc(nx, ny, node.radius + 6 + pulse, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 节点实体
+        ctx.fillStyle = node.color;
+        ctx.beginPath();
+        ctx.arc(nx, ny, node.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 标签文字
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(node.label, nx, ny + node.radius + 14);
+      });
+
+      requestAnimationFrame(drawNeuralGraph);
+    }
+
+    // 画布点击与悬停探测
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      nodes.forEach(n => {
+        const nx = n.x * width;
+        const ny = n.y * height;
+        const dist = Math.hypot(mx - nx, my - ny);
+        if (dist <= n.radius + 10) {
+          focusNode(n.id);
+        }
+      });
+    });
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      nodes.forEach(n => {
+        const nx = n.x * width;
+        const ny = n.y * height;
+        const dist = Math.hypot(mx - nx, my - ny);
+        if (dist <= n.radius + 10) {
+          focusNode(n.id);
+        }
+      });
+    });
+
+    // 初始化执行
+    renderChecklist();
+    generatePrompt();
+    drawNeuralGraph();
+  </script>
+</body>
+</html>

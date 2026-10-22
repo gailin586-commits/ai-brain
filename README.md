@@ -9,6 +9,7 @@
 
 | 文件名 | 定位与核心内容 | 读取时机 |
 | :--- | :--- | :--- |
+| **[`dashboard.html`](file:///C:/Users/GL/ai-brain/dashboard.html)** | **【大脑具象化全景中枢】**：交互式动态神经元拓扑、10大维度自检器与运镜公式生成器 | 本地双击浏览器直开，或随时可视化巡检 |
 | **[`preferences.md`](file:///C:/Users/GL/ai-brain/preferences.md)** | **最高协作宪法**：沟通准则、严禁迎合、硬伤直批与回答红线 | **每次对话开始前必须执行** |
 | **[`profile.md`](file:///C:/Users/GL/ai-brain/profile.md)** | 个人背景、AI 影视师核心身份、主力工具链与长期目标 | 涉及技术选型、工作流或长期规划时查阅 |
 | **[`projects.md`](file:///C:/Users/GL/ai-brain/projects.md)** | 当前活跃项目看板、影视分镜进度与架构追踪 | 涉及具体项目制作或任务排期时查阅 |
