@@ -21,7 +21,6 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml'
 };
 
-// 工具函数：获取当前时间格式
 function getTimestamp() {
   const now = new Date();
   return now.toISOString().replace('T', ' ').slice(0, 19);
@@ -33,10 +32,10 @@ function getDateString() {
 }
 
 // 写入/追加 Markdown
-function appendToMarkdown(relPath, title, group, desc, content) {
+function appendToMarkdown(relPath, title, group, desc, content, createdAt) {
   const targetFile = path.join(BRAIN_ROOT, relPath);
-  const time = getTimestamp();
-  const appendBlock = `\n\n### ⚡ ${title} (${time})\n- **神经元类型**：\`${group}\`\n- **核心摘要**：${desc}\n- **详细思路**：\n${content || desc}\n`;
+  const time = createdAt || getTimestamp();
+  const appendBlock = `\n\n### ⚡ ${title}\n- **创建时间**：\`${time}\`\n- **神经元类型**：\`${group}\`\n- **核心摘要**：${desc}\n- **详细思路**：\n${content || desc}\n`;
 
   try {
     fs.appendFileSync(targetFile, appendBlock, 'utf8');
@@ -46,11 +45,11 @@ function appendToMarkdown(relPath, title, group, desc, content) {
   }
 }
 
-// 追加一条日志到 memory-log.md
-function logToMemory(title, group, file) {
+// 追加日志到 memory-log.md
+function logToMemory(title, group, file, createdAt) {
   const memoryFile = path.join(BRAIN_ROOT, 'memory-log.md');
-  const dateStr = getDateString();
-  const logLine = `\n- **${getTimestamp()}**：通过贾维斯神经元系统注入新节点 [${title}]（分类：${group}，归档至 ${file}）。`;
+  const time = createdAt || getTimestamp();
+  const logLine = `\n- **${time}**：通过贾维斯神经元系统注入新节点 [${title}]（分类：${group}，归档至 ${file}）。`;
   try {
     fs.appendFileSync(memoryFile, logLine, 'utf8');
   } catch (e) {
@@ -62,9 +61,12 @@ function logToMemory(title, group, file) {
 function persistBrainData(newNode, newLink) {
   try {
     let currentData;
-    // 清除 require 缓存读取最新数据
     delete require.cache[require.resolve(BRAIN_DATA_FILE)];
     currentData = require(BRAIN_DATA_FILE);
+
+    if (!newNode.createdAt) {
+      newNode.createdAt = getTimestamp();
+    }
 
     currentData.nodes.push(newNode);
     if (newLink) {
@@ -74,7 +76,7 @@ function persistBrainData(newNode, newLink) {
     const fileContent = `// J.A.R.V.I.S. Neural Brain Graph Data\n// Generated and maintained dynamically by AI Shared Brain\n\nconst BRAIN_GRAPH_DATA = ${JSON.stringify(currentData, null, 2)};\n\nif (typeof window !== "undefined") {\n  window.BRAIN_GRAPH_DATA = BRAIN_GRAPH_DATA;\n}\nif (typeof module !== "undefined" && module.exports) {\n  module.exports = BRAIN_GRAPH_DATA;\n}\n`;
 
     fs.writeFileSync(BRAIN_DATA_FILE, fileContent, 'utf8');
-    console.log(`[J.A.R.V.I.S.] Updated brain-data.js with new node: ${newNode.name}`);
+    console.log(`[J.A.R.V.I.S.] Updated brain-data.js with new node: ${newNode.name} at ${newNode.createdAt}`);
     return true;
   } catch (err) {
     console.error('[Error] Failed to persist brain-data.js:', err);
@@ -99,14 +101,18 @@ const server = http.createServer((req, res) => {
           return res.end(JSON.stringify({ success: false, error: 'Invalid node data' }));
         }
 
+        if (!node.createdAt) {
+          node.createdAt = getTimestamp();
+        }
+
         // 持久化到 brain-data.js
         persistBrainData(node, link);
 
         // 追加到对应 Markdown
-        appendToMarkdown(node.file, node.name, node.group, node.desc, node.fullContent);
+        appendToMarkdown(node.file, node.name, node.group, node.desc, node.fullContent, node.createdAt);
 
         // 记入 memory-log.md
-        logToMemory(node.name, node.group, node.file);
+        logToMemory(node.name, node.group, node.file, node.createdAt);
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true, node }));
