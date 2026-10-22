@@ -10,9 +10,11 @@
 | 文件名 | 定位与核心内容 | 读取时机 |
 | :--- | :--- | :--- |
 | **[`dashboard.html`](file:///C:/Users/GL/ai-brain/dashboard.html)** | **【大脑具象化全景中枢】**：交互式动态神经元拓扑、10大维度自检器与运镜公式生成器 | 本地双击浏览器直开，或随时可视化巡检 |
+| **[`visualizer/`](file:///C:/Users/GL/ai-brain/visualizer/)** | **【贾维斯全息 3D 神经元系统】**：Three.js 3D 拓扑、语音 HUD 交互、网页注入长出新神经元 | 启动 `node visualizer/server.js` 访问 |
 | **[`preferences.md`](file:///C:/Users/GL/ai-brain/preferences.md)** | **最高协作宪法**：沟通准则、严禁迎合、硬伤直批与回答红线 | **每次对话开始前必须执行** |
 | **[`profile.md`](file:///C:/Users/GL/ai-brain/profile.md)** | 个人背景、AI 影视师核心身份、主力工具链与长期目标 | 涉及技术选型、工作流或长期规划时查阅 |
 | **[`projects.md`](file:///C:/Users/GL/ai-brain/projects.md)** | 当前活跃项目看板、影视分镜进度与架构追踪 | 涉及具体项目制作或任务排期时查阅 |
+| **[`ideas.md`](file:///C:/Users/GL/ai-brain/ideas.md)** | 创意池与实验性思路：多镜头视线匹配、地面力学与混合管线 | 记录前沿设想或灵感碎片时查阅与追加 |
 | **[`memory-log.md`](file:///C:/Users/GL/ai-brain/memory-log.md)** | 动态记忆日志：按日期沉淀关键决策、灵感与重要突破 | 记录更新时追加，或回顾过往决策时查阅 |
 | **[`cinematic/`](file:///C:/Users/GL/ai-brain/cinematic/)** | **AI 影视工业级资产专区**（三视图/四视图、运镜、高质量 Prompt） | 编写镜头提示词、资产设计、分镜推演时查阅 |
 | **[`cinematic/visual-quality.md`](file:///C:/Users/GL/ai-brain/cinematic/visual-quality.md)** | **顶级出图十大检查维度**（9.9/10画质控制、空间/光源/材质/防塑料感军规） | 出图、调优 Prompt、质检视觉方案前必读 |
@@ -33,4 +35,5 @@
 1. 判断内容属性（通用偏好 -> `preferences.md`；个人背景 -> `profile.md`；项目进度 -> `projects.md`；影视资产生成与运镜 -> `cinematic/` 对应文件）。
 2. 在 **[`memory-log.md`](file:///C:/Users/GL/ai-brain/memory-log.md)** 中按日期（`YYYY-MM-DD`）记录一条变更摘要。
 3. 将完整的高信噪比结论或参数提取并追加/归纳到目标 Markdown 文件中。
-4. 提醒或自动执行同步脚本（`sync.ps1` / `sync.bat`）推送到 GitHub 私有仓库。
+4. **同步维护 3D 神经元图谱**：在 `visualizer/brain-data.js` 中同步挂载对应的新节点与思维脉冲连线（Links），保证贾维斯 3D 星图与 Markdown 实时同步。
+5. 提醒或自动执行同步脚本（`sync.ps1` / `sync.bat`）推送到 GitHub 仓库。

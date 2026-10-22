@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>J.A.R.V.I.S. - AI 全息 3D 神经元系统</title>
+  
+  <!-- 引入 Three.js, 3D Force-Graph, Marked 与 Tailwind (gstatic) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+  <script src="https://unpkg.com/marked/marked.min.js"></script>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  
+  <!-- 本地数据源 -->
+  <script src="brain-data.js"></script>
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #02060d;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      user-select: none;
+    }
+    #3d-graph {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* 斯塔克 HUD 战术网格与角标 */
+    .hud-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: radial-gradient(circle at center, transparent 40%, rgba(2, 6, 13, 0.6) 95%);
+    }
+    .hud-corner {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-color: rgba(6, 182, 212, 0.5);
+    }
+    .hud-corner-tl { top: 16px; left: 16px; border-top: 2px solid; border-left: 2px solid; }
+    .hud-corner-tr { top: 16px; right: 16px; border-top: 2px solid; border-right: 2px solid; }
+    .hud-corner-bl { bottom: 16px; left: 16px; border-bottom: 2px solid; border-left: 2px solid; }
+    .hud-corner-br { bottom: 16px; right: 16px; border-bottom: 2px solid; border-right: 2px solid; }
+
+    /* 毛玻璃数据舱 */
+    .glass-deck {
+      background: rgba(8, 14, 29, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 35px rgba(2, 6, 13, 0.8), inset 0 0 20px rgba(6, 182, 212, 0.05);
+    }
+    .hud-panel {
+      background: rgba(4, 9, 20, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .hud-glow-cyan {
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    }
+    .hud-glow-amber {
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+    }
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: rgba(5, 10, 20, 0.8); }
+    ::-webkit-scrollbar-thumb { background: rgba(6, 182, 212, 0.4); border-radius: 3px; }
+  </style>
+</head>
+<body class="text-slate-100">
+
+  <!-- 3D Force Graph 渲染容器 -->
+  <div id="3d-graph"></div>
+
+  <!-- HUD 科幻背景边框与十字准星 -->
+  <div class="hud-overlay">
+    <div class="hud-corner hud-corner-tl"></div>
+    <div class="hud-corner hud-corner-tr"></div>
+    <div class="hud-corner hud-corner-bl"></div>
+    <div class="hud-corner hud-corner-br"></div>
+  </div>
+
+  <!-- 顶栏控制中枢 -->
+  <header class="absolute top-4 left-6 right-6 z-20 flex flex-wrap items-center justify-between gap-4 pointer-events-auto">
+    <!-- 左侧：系统名称与 GitHub 同步 -->
+    <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2.5 px-3.5 py-2 rounded-xl hud-panel border border-cyan-500/30">
+        <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
+        <span class="font-bold tracking-wider text-sm bg-gradient-to-r from-cyan-300 via-teal-200 to-purple-400 bg-clip-text text-transparent font-mono">
+          J.A.R.V.I.S. // NEURAL BRAIN
+        </span>
+        <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 font-mono">
+          STARK HUD v4.0
+        </span>
+      </div>
+
+      <!-- ☁️ 同步至 GitHub 按钮 -->
+      <button onclick="syncToGitHub()" id="btn-sync" class="px-3 py-2 rounded-xl bg-slate-900/80 hover:bg-cyan-950/60 text-cyan-300 border border-cyan-800/50 hover:border-cyan-400 text-xs font-mono transition flex items-center space-x-1.5 shadow-lg">
+        <span id="sync-icon">☁️</span>
+        <span id="sync-text">同步至 GitHub</span>
+      </button>
+
+      <!-- ➕ 注入新神经元按钮 -->
+      <button onclick="openSpawnModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-black font-bold text-xs font-mono transition flex items-center space-x-1.5 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+        <span>⚡</span><span>注入新神经元</span>
+      </button>
+    </div>
+
+    <!-- 中间：搜索雷达 -->
+    <div class="relative w-64 md:w-80">
+      <input type="text" id="searchInput" placeholder="搜索神经元或输入指令..." oninput="onSearch(this.value)"
+        class="w-full bg-[#050b17]/90 border border-cyan-500/30 rounded-xl px-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 font-mono">
+      <span class="absolute right-3 top-2.5 text-xs text-cyan-400 opacity-60">⌕</span>
+    </div>
+
+    <!-- 右侧：分类过滤与图例 -->
+    <div class="flex items-center space-x-1.5 text-xs font-mono bg-[#050b17]/80 p-1.5 rounded-xl border border-slate-800">
+      <button onclick="toggleGroupFilter('CORE')" id="filter-CORE" class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition">
+        ● 核心
+      </button>
+      <button onclick="toggleGroupFilter('PROJECT')" id="filter-PROJECT" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition">
+        ● 项目
+      </button>
+      <button onclick="toggleGroupFilter('IDEA')" id="filter-IDEA" class="px-2 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40 hover:bg-blue-500/30 transition">
+        ● 想法
+      </button>
+      <button onclick="toggleGroupFilter('SKILL')" id="filter-SKILL" class="px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 transition">
+        ● 技能
+      </button>
+      <button onclick="toggleGroupFilter('MEMORY')" id="filter-MEMORY" class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition">
+        ● 记忆
+      </button>
+      <button onclick="resetCamera()" title="重置视角" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white transition">
+        🎯 居中
+      </button>
+    </div>
+  </header>
+
+  <!-- 左下角：实时遥测与贾维斯声波 HUD -->
+  <div class="absolute bottom-6 left-6 z-20 pointer-events-auto flex items-end space-x-4">
+    <!-- 贾维斯声波交互圆环 -->
+    <div class="relative w-28 h-28 rounded-full glass-deck flex flex-col items-center justify-center p-2 text-center cursor-pointer border border-cyan-500/40 hover:border-cyan-400 transition" onclick="toggleVoiceRecognition()" id="voiceCircleBtn" title="点击或按住空格呼唤贾维斯">
+      <canvas id="voiceCanvas" width="112" height="112" class="absolute inset-0 rounded-full pointer-events-none"></canvas>
+      <div class="z-10 flex flex-col items-center pointer-events-none">
+        <span id="voiceIcon" class="text-xl">🎙️</span>
+        <span id="voiceLabel" class="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider mt-0.5">J.A.R.V.I.S.</span>
+        <span id="voiceStatus" class="text-[9px] font-mono text-slate-400">STANDBY</span>
+      </div>
+    </div>
+
+    <!-- 实时战术数据指标 -->
+    <div class="hud-panel p-3.5 rounded-xl border border-slate-800 text-[11px] font-mono space-y-1.5 w-48 hidden sm:block">
+      <div class="text-slate-400 flex justify-between">
+        <span>NEURONS // 节点:</span>
+        <span id="tele-nodes" class="text-cyan-400 font-bold">14</span>
+      </div>
+      <div class="text-slate-400 flex justify-between">
+        <span>SYNAPSES // 突触:</span>
+        <span id="tele-links" class="text-purple-400 font-bold">18</span>
+      </div>
+      <div class="text-slate-400 flex justify-between">
+        <span>SYSTEM HEALTH:</span>
+        <span class="text-emerald-400 font-bold">OPTIMAL</span>
+      </div>
+      <div class="text-[10px] text-slate-500 pt-1 border-t border-slate-800 flex justify-between">
+        <span>VOICE HUD:</span>
+        <span class="text-slate-400">按住 [空格] 对话</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：毛玻璃数据详情舱 (Glassmorphism Side Deck) -->
+  <div id="sideDeck" class="absolute top-20 right-6 bottom-6 w-96 max-w-[calc(100vw-48px)] glass-deck rounded-2xl p-6 z-20 pointer-events-auto transform translate-x-[420px] transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden">
+    
+    <!-- 数据舱顶栏 -->
+    <div>
+      <div class="flex items-center justify-between border-b border-cyan-500/20 pb-3 mb-4">
+        <div class="flex items-center space-x-2">
+          <span id="deckBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 uppercase">
+            NEURON
+          </span>
+          <span id="deckFile" class="text-[11px] font-mono text-slate-400 truncate max-w-[170px]">profile.md</span>
+        </div>
+        <button onclick="closeSideDeck()" class="text-slate-400 hover:text-white text-lg leading-none p-1">✕</button>
+      </div>
+
+      <!-- 节点标题与简述 -->
+      <h2 id="deckTitle" class="text-xl font-bold text-white mb-2 leading-tight">节点名称</h2>
+      <p id="deckDesc" class="text-xs text-cyan-200/90 leading-relaxed mb-4 p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-800/30 font-mono">
+        简述内容
+      </p>
+
+      <!-- Markdown 完整正文渲染区 -->
+      <div class="overflow-y-auto max-h-[calc(100vh-380px)] pr-2 text-xs text-slate-300 space-y-2 leading-relaxed prose prose-invert font-sans" id="deckContent">
+        <!-- 动态解析 Markdown -->
+      </div>
+    </div>
+
+    <!-- 数据舱底栏操作 -->
+    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+      <button onclick="spawnChildFromCurrent()" class="flex-1 py-2 px-3 rounded-lg bg-cyan-600/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-mono transition flex items-center justify-center space-x-1.5">
+        <span>⚡</span><span>延伸子思路</span>
+      </button>
+      <button onclick="speakCurrentNeuron()" class="py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono transition flex items-center space-x-1">
+        <span>🔊</span><span>朗读</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 模态弹窗：注入新神经元 (Spawn Modal) -->
+  <div id="spawnModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md hidden pointer-events-auto">
+    <div class="glass-deck w-full max-w-lg rounded-2xl p-6 border border-cyan-500/40 space-y-4 shadow-[0_0_50px_rgba(6,182,212,0.2)]">
+      <div class="flex items-center justify-between border-b border-cyan-500/20 pb-3">
+        <h3 class="text-base font-bold text-white font-mono flex items-center space-x-2">
+          <span class="text-cyan-400">⚡</span><span>注入新神经元 // INJECT NEURON</span>
+        </h3>
+        <button onclick="closeSpawnModal()" class="text-slate-400 hover:text-white text-base">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1 font-mono">神经元名称 (NAME)</label>
+          <input type="text" id="m_name" placeholder="例如：4K 动态长镜头运镜公式" class="w-full bg-[#050b17] border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-mono">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1 font-mono">神经元类型 (GROUP)</label>
+            <select id="m_group" onchange="onGroupSelectChange()" class="w-full bg-[#050b17] border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-mono">
+              <option value="IDEA">💡 IDEA (想法与思路)</option>
+              <option value="PROJECT">📌 PROJECT (活跃项目)</option>
+              <option value="SKILL">🎬 SKILL (影视资产/技能)</option>
+              <option value="MEMORY">📅 MEMORY (时间线记忆)</option>
+              <option value="CORE">🧠 CORE (核心宪法)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1 font-mono">关联父节点 (LINK TO)</label>
+            <select id="m_parent" class="w-full bg-[#050b17] border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-mono">
+              <!-- 动态填充 -->
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1 font-mono">一句话核心摘要 (SUMMARY)</label>
+          <input type="text" id="m_desc" placeholder="简述该神经元的核心视听逻辑或价值..." class="w-full bg-[#050b17] border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-mono">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1 font-mono">完整思路正文 (MARKDOWN CONTENT)</label>
+          <textarea id="m_content" rows="4" placeholder="在此输入详细的分镜逻辑、Prompt 参数或研究记录，将自动归档至 Markdown..." class="w-full bg-[#050b17] border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-mono"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-2 flex items-center justify-end space-x-3 text-xs">
+        <button onclick="closeSpawnModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-mono">取消</button>
+        <button onclick="submitNewNeuron()" id="btn-submit-neuron" class="px-5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-bold font-mono transition shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+          确认注入并写入 Markdown
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心逻辑脚本 -->
+  <script>
+    let graphData = {
+      nodes: JSON.parse(JSON.stringify(BRAIN_GRAPH_DATA.nodes)),
+      links: JSON.parse(JSON.stringify(BRAIN_GRAPH_DATA.links))
+    };
+
+    let selectedNode = null;
+    let hiddenGroups = new Set();
+    let isRecognizing = false;
+    let recognition = null;
+
+    // 1. 初始化 3D Force Graph 实例
+    const elem = document.getElementById('3d-graph');
+    const Graph = ForceGraph3D()(elem)
+      .graphData(graphData)
+      .backgroundColor('#02060d')
+      .showNavInfo(false)
+      // 节点发光球体与材质
+      .nodeRelSize(5)
+      .nodeVal(node => node.val || 10)
+      .nodeColor(node => node.color || '#38bdf8')
+      // 脉冲电流连线
+      .linkColor(() => 'rgba(6, 182, 212, 0.35)')
+      .linkWidth(1.2)
+      .linkCurvature(d => d.curvature || 0.1)
+      .linkDirectionalParticles(4)
+      .linkDirectionalParticleSpeed(0.006)
+      .linkDirectionalParticleWidth(2.2)
+      .linkDirectionalParticleColor(() => '#22d3ee')
+      // 节点悬浮文字标签与三维光球定制
+      .nodeThreeObject(node => {
+        const group = new THREE.Group();
+
+        // 核心发光球体
+        const geometry = new THREE.SphereGeometry(Math.sqrt(node.val || 10) * 1.8, 16, 16);
+        const material = new THREE.MeshLambertMaterial({
+          color: node.color,
+          transparent: true,
+          opacity: 0.85
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        group.add(sphere);
+
+        // Canvas 绘制文字精灵标签 (Sprite)
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'rgba(2, 6, 13, 0.75)';
+        ctx.roundRect(0, 0, 256, 64, 12);
+        ctx.fill();
+        ctx.strokeStyle = node.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.font = 'bold 24px monospace';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(node.name, 128, 32);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(30, 7.5, 1);
+        sprite.position.set(0, Math.sqrt(node.val || 10) * 2 + 6, 0);
+        group.add(sprite);
+
+        return group;
+      })
+      .onNodeClick(node => focusOnNode(node));
+
+    // 添加场景环境光与点光源
+    Graph.scene().add(new THREE.AmbientLight(0xbbbbbb, 1.2));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(100, 100, 100);
+    Graph.scene().add(dirLight);
+
+    // 2. 镜头平滑聚焦节点
+    function focusOnNode(node) {
+      selectedNode = node;
+      const distance = 120;
+      const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+      Graph.cameraPosition(
+        { x: node.x * distRatio, y: node.y * distRatio + 20, z: node.z * distRatio },
+        node,
+        1800
+      );
+
+      openSideDeck(node);
+    }
+
+    function resetCamera() {
+      Graph.cameraPosition({ x: 0, y: 0, z: 380 }, { x: 0, y: 0, z: 0 }, 1500);
+    }
+
+    // 3. 右侧毛玻璃数据舱控制
+    function openSideDeck(node) {
+      document.getElementById('deckTitle').innerText = node.name;
+      document.getElementById('deckDesc').innerText = node.desc || '暂无简述';
+      document.getElementById('deckFile').innerText = node.file || '未指定文件';
+      document.getElementById('deckBadge').innerText = node.group || 'NEURON';
+
+      const contentHtml = marked.parse(node.fullContent || node.desc || '*暂无详细内容*');
+      document.getElementById('deckContent').innerHTML = contentHtml;
+
+      document.getElementById('sideDeck').classList.remove('translate-x-[420px]');
+    }
+
+    function closeSideDeck() {
+      document.getElementById('sideDeck').classList.add('translate-x-[420px]');
+    }
+
+    // 4. 分类过滤逻辑
+    function toggleGroupFilter(group) {
+      const btn = document.getElementById('filter-' + group);
+      if (hiddenGroups.has(group)) {
+        hiddenGroups.delete(group);
+        btn.classList.remove('opacity-40');
+      } else {
+        hiddenGroups.add(group);
+        btn.classList.add('opacity-40');
+      }
+
+      const filteredNodes = graphData.nodes.filter(n => !hiddenGroups.has(n.group));
+      const activeIds = new Set(filteredNodes.map(n => n.id));
+      const filteredLinks = graphData.links.filter(l => {
+        const srcId = typeof l.source === 'object' ? l.source.id : l.source;
+        const tgtId = typeof l.target === 'object' ? l.target.id : l.target;
+        return activeIds.has(srcId) && activeIds.has(tgtId);
+      });
+
+      Graph.graphData({ nodes: filteredNodes, links: filteredLinks });
+      updateTelemetry();
+    }
+
+    // 5. 搜索雷达
+    function onSearch(query) {
+      if (!query.trim()) return;
+      const target = graphData.nodes.find(n => n.name.toLowerCase().includes(query.toLowerCase()));
+      if (target) {
+        focusOnNode(target);
+      }
+    }
+
+    // 6. UI 注入新神经元逻辑 (Spawner)
+    function openSpawnModal(preselectedParentId = null) {
+      const select = document.getElementById('m_parent');
+      select.innerHTML = '<option value="core-root">GL 个人大脑中枢 (默认)</option>' +
+        graphData.nodes.map(n => `<option value="${n.id}" ${n.id === preselectedParentId ? 'selected' : ''}>${n.name} (${n.group})</option>`).join('');
+
+      document.getElementById('m_name').value = '';
+      document.getElementById('m_desc').value = '';
+      document.getElementById('m_content').value = '';
+      document.getElementById('spawnModal').classList.remove('hidden');
+    }
+
+    function closeSpawnModal() {
+      document.getElementById('spawnModal').classList.add('hidden');
+    }
+
+    function spawnChildFromCurrent() {
+      if (selectedNode) {
+        openSpawnModal(selectedNode.id);
+      } else {
+        openSpawnModal();
+      }
+    }
+
+    function onGroupSelectChange() {
+      // 预留不同分组的动态样式
+    }
+
+    async function submitNewNeuron() {
+      const name = document.getElementById('m_name').value.trim();
+      const group = document.getElementById('m_group').value;
+      const parentId = document.getElementById('m_parent').value || 'core-root';
+      const desc = document.getElementById('m_desc').value.trim();
+      const content = document.getElementById('m_content').value.trim();
+
+      if (!name) {
+        alert("请输入神经元名称！");
+        return;
+      }
+
+      const colorMap = {
+        CORE: '#fbbf24',
+        PROJECT: '#06b6d4',
+        IDEA: '#3b82f6',
+        SKILL: '#a855f7',
+        MEMORY: '#10b981'
+      };
+
+      const fileMap = {
+        CORE: 'preferences.md',
+        PROJECT: 'projects.md',
+        IDEA: 'ideas.md',
+        SKILL: 'cinematic/assets-methodology.md',
+        MEMORY: 'memory-log.md'
+      };
+
+      const newId = 'n-' + Date.now();
+      const newNode = {
+        id: newId,
+        name: name,
+        group: group,
+        val: 12,
+        color: colorMap[group] || '#38bdf8',
+        desc: desc || name,
+        file: fileMap[group] || 'ideas.md',
+        fullContent: content ? `### ${name}\n\n${content}` : `### ${name}\n\n${desc}`
+      };
+
+      const newLink = {
+        source: parentId,
+        target: newId,
+        curvature: 0.15
+      };
+
+      // 实时向当前 3D 拓扑注入
+      graphData.nodes.push(newNode);
+      graphData.links.push(newLink);
+      Graph.graphData(graphData);
+
+      closeSpawnModal();
+      updateTelemetry();
+
+      // 平滑飞向新节点
+      setTimeout(() => {
+        focusOnNode(newNode);
+      }, 300);
+
+      // 调用后端 API 自动持久化写入 Markdown 和 brain-data.js
+      try {
+        const res = await fetch('/api/neuron', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ node: newNode, link: newLink })
+        });
+        const result = await res.json();
+        if (result.success) {
+          jarvisSpeak(`Sir, 新神经元已注入，并已同步写入 ${newNode.file}`);
+        }
+      } catch (e) {
+        console.warn("后端持久化离线模式：", e);
+      }
+    }
+
+    // 7. 实时遥测更新
+    function updateTelemetry() {
+      document.getElementById('tele-nodes').innerText = graphData.nodes.length;
+      document.getElementById('tele-links').innerText = graphData.links.length;
+    }
+    updateTelemetry();
+
+    // 8. 贾维斯语音交互与声波环 (Web Speech API)
+    function initSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        document.getElementById('voiceStatus').innerText = "NO MIC API";
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'zh-CN';
+
+      recognition.onstart = () => {
+        isRecognizing = true;
+        document.getElementById('voiceStatus').innerText = "LISTENING";
+        document.getElementById('voiceStatus').className = "text-[9px] font-mono text-cyan-400 font-bold animate-pulse";
+      };
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript.trim();
+        handleVoiceCommand(text);
+      };
+
+      recognition.onerror = () => {
+        stopVoiceRecognition();
+      };
+
+      recognition.onend = () => {
+        stopVoiceRecognition();
+      };
+    }
+
+    function toggleVoiceRecognition() {
+      if (isRecognizing) {
+        stopVoiceRecognition();
+      } else {
+        startVoiceRecognition();
+      }
+    }
+
+    function startVoiceRecognition() {
+      if (!recognition) initSpeechRecognition();
+      if (recognition && !isRecognizing) {
+        try { recognition.start(); } catch (e) {}
+      }
+    }
+
+    function stopVoiceRecognition() {
+      isRecognizing = false;
+      document.getElementById('voiceStatus').innerText = "STANDBY";
+      document.getElementById('voiceStatus').className = "text-[9px] font-mono text-slate-400";
+      if (recognition) {
+        try { recognition.stop(); } catch (e) {}
+      }
+    }
+
+    // 键盘空格键语音对讲
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) && !isRecognizing) {
+        e.preventDefault();
+        startVoiceRecognition();
+      }
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'Space' && isRecognizing) {
+        stopVoiceRecognition();
+      }
+    });
+
+    // 贾维斯指令解析器
+    function handleVoiceCommand(cmd) {
+      console.log("J.A.R.V.I.S. Command Received:", cmd);
+      const lower = cmd.toLowerCase();
+
+      // 指令 1: 聚焦 [名称]
+      if (cmd.includes("聚焦") || cmd.includes("查看") || cmd.includes("打开")) {
+        const keyword = cmd.replace(/(聚焦|查看|打开|神经元)/g, '').trim();
+        const matched = graphData.nodes.find(n => n.name.includes(keyword) || keyword.includes(n.name));
+        if (matched) {
+          focusOnNode(matched);
+          jarvisSpeak(`已为您聚焦 ${matched.name}。${matched.desc}`);
+        } else {
+          jarvisSpeak(`抱歉 Sir，未找到包含 ${keyword} 的神经元。`);
+        }
+        return;
+      }
+
+      // 指令 2: 记录新想法 [内容]
+      if (cmd.includes("记录新想法") || cmd.includes("记录想法") || cmd.includes("新增想法")) {
+        const ideaText = cmd.replace(/(记录新想法|记录想法|新增想法)/g, '').trim() || "未命名语音想法";
+        openSpawnModal(selectedNode ? selectedNode.id : 'core-root');
+        document.getElementById('m_group').value = 'IDEA';
+        document.getElementById('m_name').value = ideaText.slice(0, 18);
+        document.getElementById('m_desc').value = ideaText;
+        submitNewNeuron();
+        return;
+      }
+
+      // 指令 3: 汇报状态
+      if (cmd.includes("汇报状态") || cmd.includes("状态") || cmd.includes("汇报")) {
+        jarvisSpeak(`Sir, 当前大脑共有 ${graphData.nodes.length} 个神经元，已建立 ${graphData.links.length} 条思维突触，核心系统运转正常。`);
+        return;
+      }
+
+      // 默认模糊匹配
+      const matched = graphData.nodes.find(n => n.name.includes(cmd) || cmd.includes(n.name));
+      if (matched) {
+        focusOnNode(matched);
+        jarvisSpeak(`已定位至 ${matched.name}。`);
+      } else {
+        jarvisSpeak(`指令已接收：${cmd}。请下达聚焦或记录想法指令。`);
+      }
+    }
+
+    // 贾维斯语音播报 (SpeechSynthesis)
+    function jarvisSpeak(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 1.05;
+      utterance.pitch = 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakCurrentNeuron() {
+      if (selectedNode) {
+        jarvisSpeak(`${selectedNode.name}。${selectedNode.desc}`);
+      }
+    }
+
+    // 9. 声波动态同心圆绘制 Canvas
+    const vCanvas = document.getElementById('voiceCanvas');
+    const vCtx = vCanvas.getContext('2d');
+    let waveAngle = 0;
+
+    function drawVoiceWave() {
+      vCtx.clearRect(0, 0, 112, 112);
+      waveAngle += isRecognizing ? 0.08 : 0.02;
+
+      const cx = 56, cy = 56;
+      const baseR = 46;
+
+      vCtx.save();
+      vCtx.translate(cx, cy);
+
+      // 外环波形
+      vCtx.beginPath();
+      for (let i = 0; i < Math.PI * 2; i += 0.1) {
+        const amp = isRecognizing ? Math.sin(i * 6 + waveAngle * 4) * 5 : Math.sin(i * 4 + waveAngle) * 2;
+        const r = baseR + amp;
+        const x = Math.cos(i) * r;
+        const y = Math.sin(i) * r;
+        if (i === 0) vCtx.moveTo(x, y);
+        else vCtx.lineTo(x, y);
+      }
+      vCtx.closePath();
+      vCtx.strokeStyle = isRecognizing ? '#22d3ee' : 'rgba(6, 182, 212, 0.3)';
+      vCtx.lineWidth = isRecognizing ? 2 : 1;
+      vCtx.stroke();
+
+      // 内环旋转光标
+      vCtx.beginPath();
+      vCtx.arc(0, 0, 36, waveAngle, waveAngle + 1.2);
+      vCtx.strokeStyle = isRecognizing ? '#38bdf8' : 'rgba(56, 189, 248, 0.4)';
+      vCtx.lineWidth = 2;
+      vCtx.stroke();
+
+      vCtx.restore();
+      requestAnimationFrame(drawVoiceWave);
+    }
+    drawVoiceWave();
+    initSpeechRecognition();
+
+    // 10. 云端 GitHub 同步
+    async function syncToGitHub() {
+      const btn = document.getElementById('btn-sync');
+      const icon = document.getElementById('sync-icon');
+      const text = document.getElementById('sync-text');
+
+      icon.innerText = "⏳";
+      text.innerText = "正在推送到 GitHub...";
+      btn.classList.add('opacity-50');
+
+      try {
+        const res = await fetch('/api/github-sync', { method: 'POST' });
+        const result = await res.json();
+        if (result.success) {
+          icon.innerText = "✅";
+          text.innerText = "已同步到 GitHub!";
+          jarvisSpeak("Sir, 个人大脑已全量同步至 GitHub 云端仓库。");
+        } else {
+          icon.innerText = "⚠️";
+          text.innerText = "同步异常";
+        }
+      } catch (e) {
+        icon.innerText = "⚠️";
+        text.innerText = "离线完成";
+      } finally {
+        setTimeout(() => {
+          icon.innerText = "☁️";
+          text.innerText = "同步至 GitHub";
+          btn.classList.remove('opacity-50');
+        }, 3000);
+      }
+    }
+  </script>
+</body>
+</html>
