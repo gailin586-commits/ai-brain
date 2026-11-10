@@ -1,0 +1,6 @@
+interface:
+  display_name: "Secret in the House｜人物场景视觉圣经"
+  short_description: "锁定1870年代英国庄园风格，复用人物、场景及道具的超写实双提示词"
+  default_prompt: "使用 $secret-in-the-house-visual-bible，按已定人物与场景风格生成本次资产图。"
+policy:
+  allow_implicit_invocation: true

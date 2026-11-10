@@ -1,0 +1,4 @@
+interface:
+  display_name: "生图 Prompt"
+  short_description: "编写图片、概念设定、叙事画面与关键帧 prompt"
+  default_prompt: "使用 $image-prompt 把这个想法整理成带有层级标签、真实引用、全程正向表达的图片主 prompt。"

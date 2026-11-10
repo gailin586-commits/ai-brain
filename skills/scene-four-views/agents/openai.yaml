@@ -1,0 +1,6 @@
+interface:
+  display_name: "场景四视图"
+  short_description: "从参考图提取六方位元素，建立正反打及左右视图，保持空间与遮挡一致"
+  default_prompt: "使用 $scene-four-views，依据我的场景参考先整理正面和反打，再制作左右视图提示词。"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AZ8 CLI"
+  short_description: "Install the latest AZ8 CLI and operate AZ8 safely"
+  default_prompt: "Use $az8-cli to install or update AZ8 CLI, then help me work safely in an AZ8 Project."

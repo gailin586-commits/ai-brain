@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 电影导演：叙事与视听"
+  short_description: "将电影知识转为分镜、表演、声音与剪辑决策，支持导演实战及陪伴学习"
+  default_prompt: "使用 $ai-film-directing 分析这场戏，明确观众的信息变化，设计可执行镜头并说明关键取舍。"

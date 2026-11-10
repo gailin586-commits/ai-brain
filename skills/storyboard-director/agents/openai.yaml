@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIGC 分镜导演"
+  short_description: "把剧本拆成 Seedance 2.0 分镜表，shot 按叙事划分、再打包成 ≤15 秒生成段"
+  default_prompt: "使用 $storyboard-director 把这份剧本拆成 AIGC 分镜表：shot 按叙事必要性划分，相邻 shot 打包成 ≤15 秒的生成段；上下文附带参考素材库时直接引用其中已有素材。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "参考生视频 Prompt"
+  short_description: "为 Seedance 2.0 写 4–15 秒单镜或单次多镜 prompt"
+  default_prompt: "使用 $video-prompt 把这些命名参考资产和画面意图整理成 Seedance 2.0 的多行自然语言生视频 prompt；内容构成一个连续镜头时写单镜，需一次直出多镜成片时写带剪辑关系的多镜序列。"

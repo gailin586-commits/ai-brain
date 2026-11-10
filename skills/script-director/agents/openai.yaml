@@ -1,0 +1,4 @@
+interface:
+  display_name: "故事编剧与编导"
+  short_description: "独立完成 15 秒至 15 分钟故事视频的故事内核、剧本与编导方案"
+  default_prompt: "使用 $script-director 为这个故事视频完成故事内核、剧本与编导方案。"

@@ -1,0 +1,37 @@
+{
+  "sources": [
+    {
+      "file": "Secret_in_the_House_人物资产_GPT_MJ双提示词圣经_减龄超写实版.docx",
+      "sha256": "2398a496d69669c39f094389ac9b9a723b2c1024e34a138f2635e2b972089625"
+    },
+    {
+      "file": "Secret_in_the_House_全场景_GPT_MJ双提示词_超写实1870s视觉圣经.docx",
+      "sha256": "9271fa03d21fb71f5ce1a3be06d01aa961faa9ca1492382b74d5dab42b9be05b"
+    },
+    {
+      "file": "Secret_in_the_House_全部道具_GPT_MJ双提示词圣经_超写实1870s.docx",
+      "sha256": "b9f645f70c8dbd1e2ea0dffc1fd1d0c8d329f77893667a73b984bc7397fd40ab"
+    }
+  ],
+  "extraction": "DOCX word/document.xml paragraph text, including table cells; source visual layout not reproduced",
+  "coverage": [
+    {
+      "category": "characters",
+      "assets": 7,
+      "source_paragraphs": 223,
+      "all_paragraphs_preserved": true
+    },
+    {
+      "category": "scenes",
+      "assets": 15,
+      "source_paragraphs": 376,
+      "all_paragraphs_preserved": true
+    },
+    {
+      "category": "props",
+      "assets": 26,
+      "source_paragraphs": 448,
+      "all_paragraphs_preserved": true
+    }
+  ]
+}
