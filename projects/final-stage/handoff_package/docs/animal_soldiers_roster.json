@@ -1,0 +1,60 @@
+{
+  "project_canvas_url": "https://studio.az8.art/projects/6fa48707223948018851ecc703334710?lng=zh",
+  "roster": [
+    {
+      "role": "突击兵",
+      "name": "战术奶狗（歪嘴修勾）",
+      "view_node_id": "view_node_1df910de02d5476fa3e4fef9b1c59ccf",
+      "core_node_id": "a3c199e2a2d147fc8b8fc8b20f27b012",
+      "position": [
+        -3000,
+        8400
+      ],
+      "url": "https://data.az8.art/backend/prod/forge/results/image/bc24bd29-3a62-4b81-9fd8-4db4badeb4dd.png"
+    },
+    {
+      "role": "哨戒兵",
+      "name": "战术奶鸡（胖墩公鸡）",
+      "view_node_id": "view_node_a416d7d2095a48848917df1a1eccc38d",
+      "core_node_id": "9ab9daf5778e48c59bf7908b3945270f",
+      "position": [
+        -3000,
+        9200
+      ],
+      "url": "https://data.az8.art/backend/prod/forge/results/image/ff260a74-ba57-49c7-816a-523ff818899e.png"
+    },
+    {
+      "role": "重装突击队长",
+      "name": "战术奶龙（摸肚大龙）",
+      "view_node_id": "view_node_c42c0699e1e64cfd96374dc71f59f959",
+      "core_node_id": "93b3b7b2cf6440b9a878093866161f06",
+      "position": [
+        -3000,
+        10000
+      ],
+      "url": "https://data.az8.art/backend/prod/forge/results/image/51eb79b7-06ca-466d-b0ff-039f4e471328.png"
+    },
+    {
+      "role": "飞行医疗侦察",
+      "name": "战术蜜蜂鼠（缝缝补补）",
+      "view_node_id": "view_node_20d58b2094d6415ba2acc787ff96304a",
+      "core_node_id": "adc630c02b404e43a6155d2a80447316",
+      "position": [
+        -3000,
+        10800
+      ],
+      "url": "https://data.az8.art/backend/prod/forge/results/image/fb091594-9322-4bf8-8585-a2cb03acdce8.png"
+    },
+    {
+      "role": "重装生化精锐",
+      "name": "战术九头龙（海德拉暴龙）",
+      "view_node_id": "view_node_1e8b2886782744b0b17e02d4408fe15b",
+      "core_node_id": "90e475a4e2914bf593b8c34bb9cb1700",
+      "position": [
+        -3000,
+        11600
+      ],
+      "url": "https://data.az8.art/backend/prod/forge/results/image/64e3970f-d8e8-489b-a85d-08a0e0c9b875.png"
+    }
+  ]
+}

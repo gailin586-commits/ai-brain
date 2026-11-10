@@ -1,0 +1,100 @@
+{
+  "project_meta": {
+    "project_name": "最终关卡·猛攻机坝（张米洋六岁生日特别篇）",
+    "project_id": "6fa48707223948018851ecc703334710",
+    "workspace_id": "7516771586008969216",
+    "workspace_name": "龙氏集团",
+    "canvas_url": "https://studio.az8.art/projects/6fa48707223948018851ecc703334710?lng=zh",
+    "model": "Seedance 2.5 正式版",
+    "aspect_ratio": "16:9",
+    "target_total_duration_sec": 98
+  },
+  "assault_squad": [
+    {
+      "id": "miyang",
+      "name": "张米洋（6岁小指挥官）",
+      "role": "核心主角 / 全场绝对战术中枢",
+      "view_node_id": "view_node_633d6b0e8b2c451da7eb00c436da5c63",
+      "tactical_outfit_node_id": "view_node_1dfad343fcfe4c64b59b1fa8514d1565",
+      "features": "6岁童颜带婴儿肥、大号哑光黑降噪耳机、战术儿童多口袋马甲、紧凑电磁发射器"
+    },
+    {
+      "id": "operator_golden_skull",
+      "name": "金色骷髅队长（红狼原版）",
+      "role": "进攻主力① / 首席护卫与滑铲突击",
+      "view_node_id": "view_node_d794ce2e99f546c19f5060b2ebcf9ef1",
+      "reference_file": "references/operator_01_golden_skull_3view.jpg",
+      "signature_skill": "液压外骨骼过载、低重心贴地极限滑铲扫射"
+    },
+    {
+      "id": "operator_cyborg_trenchcoat",
+      "name": "机械义眼风衣副手（赛伊德）",
+      "role": "进攻主力② / 侧翼重火力压制",
+      "view_node_id": "view_node_cyborg_trenchcoat",
+      "reference_file": "references/operator_02_cyborg_trenchcoat_3view.jpg",
+      "features": "机械义眼、做旧黑风衣、亮黄工装战术长裤"
+    },
+    {
+      "id": "operator_red_hood",
+      "name": "红面兜帽战术刺客（红魔）",
+      "role": "进攻主力③ / 潜行扫荡盲区",
+      "view_node_id": "view_node_red_hood_assassin",
+      "reference_file": "references/operator_03_red_hood_assassin_3view.jpg",
+      "features": "猩红战术骷髅面具、深黑战术兜帽斗篷"
+    },
+    {
+      "id": "operator_jetpack_quadnvg",
+      "name": "双联喷气四目突击兵",
+      "role": "进攻主力④ / 制空跃升与反制无人机",
+      "view_node_id": "view_node_jetpack_quadnvg",
+      "reference_file": "references/operator_04_jetpack_quadnvg_3view.jpg",
+      "features": "四目全景夜视仪、双联火箭喷气背包、胸前小仓鼠挂件"
+    }
+  ],
+  "defenders_animal_soldiers": [
+    {
+      "id": "animal_dog",
+      "name": "战术奶狗突击兵",
+      "view_node_id": "view_node_1df910de02d5476fa3e4fef9b1c59ccf",
+      "vfx_death": "中弹瞬间解体爆裂为金色粒子与金币雨"
+    },
+    {
+      "id": "animal_chicken",
+      "name": "战术奶鸡哨戒兵",
+      "view_node_id": "view_node_a416d7d2095a48848917df1a1eccc38d",
+      "vfx_death": "房顶哨位受力后仰爆裂为金币雨"
+    },
+    {
+      "id": "animal_dragon",
+      "name": "战术奶龙重装突击队长",
+      "view_node_id": "view_node_c42c0699e1e64cfd96374dc71f59f959",
+      "vfx_death": "爆出大片金币并掉落战术门禁金卡"
+    },
+    {
+      "id": "animal_bee_hamster",
+      "name": "战术蜜蜂鼠飞行医疗侦察",
+      "view_node_id": "view_node_20d58b2094d6415ba2acc787ff96304a"
+    },
+    {
+      "id": "animal_hydra",
+      "name": "战术九头龙重装精锐",
+      "view_node_id": "view_node_1e8b2886782744b0b17e02d4408fe15b"
+    }
+  ],
+  "mastermind_dad": {
+    "name": "大老板（爸爸）",
+    "view_node_id": "view_node_f586a1bb9e54460a8b948f2b23a76383",
+    "real_photo_reference": "references/dad_tattoo_left_hand_real.jpg",
+    "visual_anchors": {
+      "costume": "笔挺深黑西装三件套配白衬衫",
+      "left_hand": "左小臂大面积艺术花臂刺青、左手手指佩戴金属银戒",
+      "reveal_pacing": "前90秒仅展示左侧手部与背影；终局大门开启推餐车正式露脸"
+    }
+  },
+  "key_props": {
+    "golden_keycard": "击败战术奶龙掉落的蓝金战术门禁磁卡",
+    "security_camera": "行政楼入口上方的军用半球红外监控探头，一枪打碎冒电火花",
+    "red_secure_crate": "《三角洲行动》标志性高精大红密码物资箱（Red Secure Crate）",
+    "legendary_diamond": "黑丝绒上折射七彩火彩的绝世发光巨钻，金色立体铭刻'六岁快乐'"
+  }
+}
